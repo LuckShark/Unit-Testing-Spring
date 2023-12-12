@@ -9,6 +9,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 @Entity
 public class Produto implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -17,6 +20,10 @@ public class Produto implements Serializable {
 	private Integer id;
 	private String nome;
 	private Double preco;
+	@ManyToMany
+	@JoinTable(name = "PRODUTO_CATEGORIA",
+	joinColumns = @JoinColumn(name = "PRODUTO_ID"),
+	inverseJoinColumns = @JoinColumn(name = "CATEGORIA_ID"))
 	private List<Categoria> categorias = new ArrayList<>();
 	
 	public Produto() {
