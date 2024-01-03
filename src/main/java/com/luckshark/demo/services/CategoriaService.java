@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.luckshark.demo.entities.Categoria;
 import com.luckshark.demo.repositories.CategoriaRepository;
+import com.luckshark.demo.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {
@@ -16,6 +17,7 @@ public class CategoriaService {
 	
 	public Categoria buscar(Integer id) {
 		Optional<Categoria> categoria = repository.findById(id);
-		return categoria.orElse(null);
+		return categoria.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto nao encontrado! Id: " + id + " Tipo: " + Categoria.class.getName()));
 	}
 }
