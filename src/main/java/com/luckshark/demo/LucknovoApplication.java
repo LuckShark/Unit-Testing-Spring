@@ -9,10 +9,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.luckshark.demo.entities.Categoria;
 import com.luckshark.demo.entities.Cidade;
+import com.luckshark.demo.entities.Cliente;
+import com.luckshark.demo.entities.Endereco;
 import com.luckshark.demo.entities.Estado;
 import com.luckshark.demo.entities.Produto;
+import com.luckshark.demo.entities.enums.TipoCliente;
 import com.luckshark.demo.repositories.CategoriaRepository;
 import com.luckshark.demo.repositories.CidadeRepository;
+import com.luckshark.demo.repositories.ClienteRepository;
+import com.luckshark.demo.repositories.EnderecoRepository;
 import com.luckshark.demo.repositories.EstadoRepository;
 import com.luckshark.demo.repositories.ProdutoRepository;
 
@@ -27,6 +32,10 @@ public class LucknovoApplication implements CommandLineRunner{
 	private CidadeRepository cidaderepository;
 	@Autowired
 	private EstadoRepository estadorepository;
+	@Autowired
+	private ClienteRepository clienterepository;
+	@Autowired
+	private EnderecoRepository enderecorepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(LucknovoApplication.class, args);
@@ -65,7 +74,15 @@ public class LucknovoApplication implements CommandLineRunner{
 		estadorepository.saveAll(Arrays.asList(estado1, estado2));
 		cidaderepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
 		
+		Cliente cliente1 = new Cliente(null, "Igor", "sesasenior@sesa.com", "12312309495", TipoCliente.PESSOAFISICA);
+		cliente1.getTelefones().addAll(Arrays.asList("123456789", "09876543456"));
+		
+		Endereco endereco1 = new Endereco(null, "Rua Parangaba Horrível", "666", "Cheiro do queijo", "Parangaba", "6660690666", cliente1, cidade1);
+		Endereco endereco2 = new Endereco(null, "Rua José Crime Walter", "69", "Barra pesada", "José Walter", "24024", cliente1, cidade2);
 
+		clienterepository.saveAll(Arrays.asList(cliente1));
+		enderecorepository.saveAll(Arrays.asList(endereco1, endereco2));
+		
 	
 	}
 	

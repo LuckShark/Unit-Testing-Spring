@@ -3,10 +3,14 @@ package com.luckshark.demo.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Endereco implements Serializable {
@@ -21,18 +25,29 @@ public class Endereco implements Serializable {
     private String complemento;
     private String bairro;
     private String cep;
+    
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
+    
+    @ManyToOne
+    @JoinColumn(name = "cidade_id")
+    private Cidade cidade;
 
     public Endereco() {
         // Construtor padrão sem argumentos
     }
 
-    public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep) {
+    public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep, Cliente cliente, Cidade cidade) {
         this.id = id;
         this.logradouro = logradouro;
         this.numero = numero;
         this.complemento = complemento;
         this.bairro = bairro;
         this.cep = cep;
+        this.cliente = cliente;
+        this.cidade = cidade;
     }
 
     // Getters e Setters
@@ -84,6 +99,22 @@ public class Endereco implements Serializable {
     public void setCep(String cep) {
         this.cep = cep;
     }
+    
+    public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+	
+	public Cidade getCidade() {
+		return cidade;
+	}
+
+	public void setCidade(Cidade cidade) {
+		this.cidade = cidade;
+	}
 
     @Override
     public int hashCode() {
@@ -99,4 +130,8 @@ public class Endereco implements Serializable {
         Endereco endereco = (Endereco) obj;
         return Objects.equals(id, endereco.id);
     }
+
+	
+
+	
 }
