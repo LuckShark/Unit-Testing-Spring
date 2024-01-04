@@ -3,10 +3,14 @@ package com.luckshark.demo.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Cidade implements Serializable {
@@ -17,14 +21,19 @@ public class Cidade implements Serializable {
     private Integer id;
 
     private String nome;
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name = "estado_id")
+    private Estado estado;
 
     public Cidade() {
         // Construtor padrão sem argumentos
     }
 
-    public Cidade(Integer id, String nome) {
+    public Cidade(Integer id, String nome, Estado estado) {
         this.id = id;
         this.nome = nome;
+        this.estado = estado;
     }
 
     // Getters e Setters
@@ -44,6 +53,14 @@ public class Cidade implements Serializable {
     public void setNome(String nome) {
         this.nome = nome;
     }
+    
+    public Estado getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Estado estado) {
+		this.estado = estado;
+	}
 
     @Override
     public int hashCode() {
@@ -59,4 +76,6 @@ public class Cidade implements Serializable {
         Cidade cidade = (Cidade) obj;
         return Objects.equals(id, cidade.id);
     }
+
+	
 }

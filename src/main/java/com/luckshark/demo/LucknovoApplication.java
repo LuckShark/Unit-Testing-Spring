@@ -8,8 +8,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.luckshark.demo.entities.Categoria;
+import com.luckshark.demo.entities.Cidade;
+import com.luckshark.demo.entities.Estado;
 import com.luckshark.demo.entities.Produto;
 import com.luckshark.demo.repositories.CategoriaRepository;
+import com.luckshark.demo.repositories.CidadeRepository;
+import com.luckshark.demo.repositories.EstadoRepository;
 import com.luckshark.demo.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -19,6 +23,10 @@ public class LucknovoApplication implements CommandLineRunner{
 	private CategoriaRepository categoriarepository;
 	@Autowired
 	private ProdutoRepository produtorepository;
+	@Autowired
+	private CidadeRepository cidaderepository;
+	@Autowired
+	private EstadoRepository estadorepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(LucknovoApplication.class, args);
@@ -39,10 +47,26 @@ public class LucknovoApplication implements CommandLineRunner{
 		produto1.getCategorias().addAll(Arrays.asList(categoria1));
 		produto2.getCategorias().addAll(Arrays.asList(categoria1, categoria2));
 		produto3.getCategorias().addAll(Arrays.asList(categoria1));
-
-
+		
 		categoriarepository.saveAll(Arrays.asList(categoria1, categoria2));
 		produtorepository.saveAll(Arrays.asList(produto1, produto2, produto3));
+		
+		
+		Estado estado1 = new Estado(null, "Ceará");
+		Estado estado2 = new Estado(null, "São Paulo");
+		
+		Cidade cidade1 = new Cidade(null, "Fortaleza", estado1);
+		Cidade cidade2 = new Cidade(null, "Campinas", estado2);
+		Cidade cidade3 = new Cidade(null, "Sobral", estado2);
+		
+		estado1.getCidades().add(cidade1);
+		estado2.getCidades().addAll(Arrays.asList(cidade2, cidade3));
+		
+		estadorepository.saveAll(Arrays.asList(estado1, estado2));
+		cidaderepository.saveAll(Arrays.asList(cidade1, cidade2, cidade3));
+		
+
+	
 	}
 	
 	

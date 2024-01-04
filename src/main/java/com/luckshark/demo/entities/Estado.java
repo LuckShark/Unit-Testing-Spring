@@ -1,12 +1,17 @@
 package com.luckshark.demo.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
 @Entity
 public class Estado implements Serializable {
@@ -17,6 +22,9 @@ public class Estado implements Serializable {
     private Integer id;
 
     private String nome;
+    @JsonManagedReference
+    @OneToMany(mappedBy = "estado")
+    private List<Cidade> cidades = new ArrayList<>();
 
     public Estado() {
         // Construtor padrão sem argumentos
@@ -44,6 +52,14 @@ public class Estado implements Serializable {
     public void setNome(String nome) {
         this.nome = nome;
     }
+    
+    public List<Cidade> getCidades() {
+		return cidades;
+	}
+
+	public void setCidades(List<Cidade> cidades) {
+		this.cidades = cidades;
+	}
 
     @Override
     public int hashCode() {
@@ -59,4 +75,6 @@ public class Estado implements Serializable {
         Estado estado = (Estado) obj;
         return Objects.equals(id, estado.id);
     }
+
+	
 }
