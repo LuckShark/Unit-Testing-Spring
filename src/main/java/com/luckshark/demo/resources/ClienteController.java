@@ -1,5 +1,7 @@
 package com.luckshark.demo.resources;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,4 +25,10 @@ public class ClienteController {
 	
 		return ResponseEntity.ok(cliente);
 	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<List<Cliente>> getAll() {
+        List<Cliente> clientes = service.getAllClientes();
+        return ResponseEntity.ok(clientes);
+    }
 }

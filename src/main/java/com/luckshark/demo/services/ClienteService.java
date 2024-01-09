@@ -1,5 +1,6 @@
 package com.luckshark.demo.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,4 +21,9 @@ public class ClienteService {
 		return cliente.orElseThrow(() -> new ObjectNotFoundException(
 				"Cliente nao encontrado! Id: " + id + " Tipo: " + Cliente.class.getName()));
 	}
+	
+	public List<Cliente> getAllClientes() {
+        return repository.findAll();
+    }
+	
 }
