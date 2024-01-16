@@ -33,7 +33,10 @@ public class Cliente implements Serializable {
 	@CollectionTable(name = "telefone")
 	@ElementCollection
 	private Set<String> telefones = new HashSet<String>(); //uma lista de números que não se repete, para isso eu uso o Set (hashSet é uma maneira de varrer)
+	@OneToMany(mappedBy = "cliente")
+	private List<Pedido> pedidos = new ArrayList<>();
 
+	
 	
 	public Cliente() {
 		//faço um construtor padrão sem argumentos
@@ -104,6 +107,14 @@ public class Cliente implements Serializable {
 	public void setTelefones(Set<String> telefones) {
 		this.telefones = telefones;
 	}
+	
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
 
 	@Override
 	public int hashCode() {
@@ -121,7 +132,5 @@ public class Cliente implements Serializable {
 		Cliente other = (Cliente) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
-	
+
 }

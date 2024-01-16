@@ -1,5 +1,6 @@
 package com.luckshark.demo;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,20 @@ import com.luckshark.demo.entities.Cidade;
 import com.luckshark.demo.entities.Cliente;
 import com.luckshark.demo.entities.Endereco;
 import com.luckshark.demo.entities.Estado;
+import com.luckshark.demo.entities.Pagamento;
+import com.luckshark.demo.entities.PagamentoComBoleto;
+import com.luckshark.demo.entities.PagamentoComCartao;
+import com.luckshark.demo.entities.Pedido;
 import com.luckshark.demo.entities.Produto;
+import com.luckshark.demo.entities.enums.EstadoPagamento;
 import com.luckshark.demo.entities.enums.TipoCliente;
 import com.luckshark.demo.repositories.CategoriaRepository;
 import com.luckshark.demo.repositories.CidadeRepository;
 import com.luckshark.demo.repositories.ClienteRepository;
 import com.luckshark.demo.repositories.EnderecoRepository;
 import com.luckshark.demo.repositories.EstadoRepository;
+import com.luckshark.demo.repositories.PagamentoRepository;
+import com.luckshark.demo.repositories.PedidoRepository;
 import com.luckshark.demo.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -36,6 +44,10 @@ public class LucknovoApplication implements CommandLineRunner{
 	private ClienteRepository clienterepository;
 	@Autowired
 	private EnderecoRepository enderecorepository;
+	@Autowired
+	private PedidoRepository pedidorepository;
+	@Autowired
+	private PagamentoRepository pagamentorepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(LucknovoApplication.class, args);
@@ -82,6 +94,22 @@ public class LucknovoApplication implements CommandLineRunner{
 
 		clienterepository.saveAll(Arrays.asList(cliente1));
 		enderecorepository.saveAll(Arrays.asList(endereco1, endereco2));
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
+		
+		Pedido pedido1 = new Pedido(null,sdf.parse("30/09/2017 10:32"),cliente1,endereco1);
+		Pedido pedido2 = new Pedido(null,sdf.parse("11/09/2002 09:09"),cliente1,endereco2);
+		
+		Pagamento pagamento1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, pedido1, 6);
+		Pagamento pagamento2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, pedido2, sdf.parse("30/09/2017 10:32"), null);
+
+		pedido1.setPagamento(pagamento1);
+		pedido2.setPagamento(pagamento2);
+		
+		cliente1.getPedidos().addAll(Arrays.asList(pedido1, pedido2));
+		
+		pedidorepository.saveAll(Arrays.asList(pedido1, pedido2));
+		pagamentorepository.saveAll(Arrays.asList(pagamento1, pagamento2));
 		
 	
 	}
